@@ -5,7 +5,7 @@ import sharp from 'sharp'
 
 const f = createUploadthing();
 
-const auth = (req: Request) => ({ id: "fakeId" });
+// const auth = (req: Request) => ({ id: "fakeId" });
 
 
 export const ourFileRouter = {

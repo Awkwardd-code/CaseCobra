@@ -1,10 +1,10 @@
 // src/db/index.ts or wherever you define your Prisma client
-import { PrismaClient } from '@/generated/prisma'
+import { PrismaClient } from '@prisma/client'
 
 
 declare global {
   // Correctly extend the globalThis object
-  var cachedPrisma: PrismaClient | undefined
+  let cachedPrisma: PrismaClient | undefined
 }
 
 const globalForPrisma = globalThis as typeof globalThis & {

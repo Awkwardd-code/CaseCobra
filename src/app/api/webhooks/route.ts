@@ -66,9 +66,13 @@ export async function POST(req: Request) {
                     billingAddress: {
                         create: {
                             name: session.customer_details.name!,
+                            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                             city: billingAddress?.city!,
+                            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                             country: billingAddress?.country!,
+                            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                             postalCode: billingAddress?.postal_code!,
+                            // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
                             street: billingAddress?.line1!,
                             state: billingAddress?.state ?? undefined,
                         },
