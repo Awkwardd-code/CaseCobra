@@ -1,4 +1,3 @@
-
 import MaxWidthWrapper from '@/components/elements/MaxWidthWrapper'
 import Steps from '@/components/elements/Steps'
 import { ReactNode } from 'react'

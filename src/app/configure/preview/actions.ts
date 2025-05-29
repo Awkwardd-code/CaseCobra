@@ -15,9 +15,6 @@ export const createCheckoutSession = async ({
     where: { id: configId },
   })
 
-  console.log(configuration);
-
-
   if (!configuration) {
     throw new Error('No such configuration found')
   }
@@ -45,11 +42,10 @@ export const createCheckoutSession = async ({
     },
   })
 
-
+  console.log(user.id, configuration.id)
 
   if (existingOrder) {
     order = existingOrder
-   
   } else {
     order = await db.order.create({
       data: {
@@ -58,7 +54,6 @@ export const createCheckoutSession = async ({
         configurationId: configuration.id,
       },
     })
-    
   }
 
   const product = await stripe.products.create({
@@ -70,27 +65,18 @@ export const createCheckoutSession = async ({
     },
   })
 
+  const stripeSession = await stripe.checkout.sessions.create({
+    success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
+    cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/configure/preview?id=${configuration.id}`,
+    payment_method_types: ['card', 'paypal'],
+    mode: 'payment',
+    shipping_address_collection: { allowed_countries: ['DE', 'US'] },
+    metadata: {
+      userId: user.id,
+      orderId: order.id,
+    },
+    line_items: [{ price: product.default_price as string, quantity: 1 }],
+  })
 
-
-  try {
-    const stripeSession = await stripe.checkout.sessions.create({
-      success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/thank-you?orderId=${order.id}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/configure/preview?id=${configuration.id}`,
-      payment_method_types: ['card'],
-      mode: 'payment',
-      shipping_address_collection: { allowed_countries: ['DE', 'US'] },
-      metadata: {
-        userId: user.id,
-        orderId: order.id,
-      },
-      line_items: [{ price: product.default_price as string, quantity: 1 }],
-    })
-    console.log(stripeSession);
-    return { url: stripeSession.url }
-  } catch (err) {
-    console.error('Stripe session creation failed:', err);
-    throw err;
-  }
-
-
+  return { url: stripeSession.url }
 }

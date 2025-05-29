@@ -43,8 +43,7 @@ const DesignConfigurator = ({
   imageUrl,
   imageDimensions,
 }: DesignConfiguratorProps) => {
- 
- 
+  
   const router = useRouter()
 
   const { mutate: saveConfig, isPending } = useMutation({
