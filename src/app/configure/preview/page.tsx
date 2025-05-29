@@ -47,6 +47,6 @@ const Page = async ({ searchParams }: PageProps) => {
   }
 
   return <DesignPreview configuration={configuration} />
-};
+}
 
 export default Page;
